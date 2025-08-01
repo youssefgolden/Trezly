@@ -1,0 +1,6 @@
+@TresorerieApi_HostAddress = http://localhost:5137
+
+GET {{TresorerieApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
