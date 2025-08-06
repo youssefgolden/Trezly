@@ -11,9 +11,17 @@ type AlertProps = {
     };
   
     return (
-      <div className={`border px-4 py-3 rounded relative mb-4 ${colorMap[type]}`} role="alert">
-        <strong className="font-bold capitalize">{type}:</strong>
-        <span className="block sm:inline ml-1">{message}</span>
+      <div
+        className={`border px-4 py-3 rounded relative mb-4 ${colorMap[type]}`}
+        role="alert"
+        data-testid="alert"
+      >
+        <strong data-testid="alert-type" className="font-bold capitalize">
+          {type}:
+        </strong>
+        <span data-testid="alert-message" className="block sm:inline ml-1">
+          {message}
+        </span>
       </div>
     );
   }
