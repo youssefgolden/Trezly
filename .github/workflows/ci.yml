@@ -1,4 +1,4 @@
-name: CI - Frontend
+name: CI – Frontend
 
 on:
   push:
@@ -12,16 +12,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      - name: 📦 Install dependencies
+      - name: Install front dependencies
         run: npm ci
+        working-directory: ./frontend
 
-      - name: 🔍 Run tests with Vitest
+      - name: Run tests with Vitest
         run: npm run test -- --run
+        working-directory: ./frontend
