@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addTransaction, fetchTransactions } from "../store/slice/transactionsSlice";
-import { fetchCategories } from "../store/slice/categoriesSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { addTransaction, fetchTransactions } from "../../store/slice/transactionsSlice";
+import { fetchCategories } from "../../store/slice/categoriesSlice";
 
-export default function AddTransactionForm() {
+export default function TransactionForm() {
     const [amount, setAmount] = useState(1);
     const [type, setType] = useState('');
     const [description, setDescription] = useState('');

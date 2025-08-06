@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import TransactionsCard from '../components/TransactionCard'
 import { fetchTransactions } from '../store/slice/transactionsSlice'
-import TransactionFilters from '../components/DashboardComponents/TransactionFilters';
 import { fetchCategories } from '../store/slice/categoriesSlice';
+import TransactionFilters from '../components/transactions/TransactionFilters';
+import TransactionList from '../components/transactions/TransactionList';
 
 export default function Transactions() {
 
@@ -43,25 +43,15 @@ export default function Transactions() {
   return <div>
     <div className="min-h-screen bg-white p-6">
 
-      <TransactionFilters type={filterType} categoryName={filterCategoryName} setType={setFilterType} setCategoryName={setFilterCategoryName} categories={categories} />
+      <TransactionFilters 
+      type={filterType} 
+      categoryName={filterCategoryName} 
+      setType={setFilterType} 
+      setCategoryName={setFilterCategoryName} 
+      categories={categories} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white rounded-2xl shadow p-6 hover:shadow-lg transition">
-        {
-
-          filteredTransactions.map(transaction => (
-            <TransactionsCard
-              key={transaction.id}
-              id={transaction.id}
-              amount={transaction.amount}
-              type={transaction.type}
-              description={transaction.description}
-              categoryId={transaction.categoryId}
-              categoryName={transaction.categoryName ?? '-'}
-            />
-          ))
-        }
-
-      </div>
+      <TransactionList transactions={filteredTransactions} />
+      
     </div>
   </div>
 }

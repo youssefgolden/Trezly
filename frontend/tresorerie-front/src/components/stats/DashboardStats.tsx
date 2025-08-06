@@ -1,4 +1,5 @@
 import { useAppSelector } from "../../store/hooks"
+import StatCard from "./StatCard";
 
 export default function DashboardStats() {
     //import all transactions from redux store
@@ -13,13 +14,10 @@ export default function DashboardStats() {
         .reduce((sum, transaction) => sum + transaction.amount, 0)
 
     return (
-        <div>
-            <h4 className="font-semibold mb-8 text-gray-800">Dashboard Stats</h4>
-            <ul className="text-sm text-gray-500">
-                <li>Total Income :{incomeTotal}€ </li>
-                <li>Total Expense :{expenseTotal}€ </li>
-                <li>Current Balance: {incomeTotal - expenseTotal}€</li>
-            </ul>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <StatCard name={'Total Income'} value={incomeTotal} />
+                <StatCard name={'Total Expense'} value={expenseTotal} />
+                <StatCard name={'Current Balance'} value={incomeTotal - expenseTotal} />
         </div>
     )
 }

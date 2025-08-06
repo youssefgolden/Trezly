@@ -4,7 +4,7 @@ type TransactionsDataType = {
     type: string;
     description: string;
     categoryId: number;
-    categoryName: string;
+    categoryName?: string;
 }
 export default function TransactionsCard({ id, amount, type, description, categoryId, categoryName }: TransactionsDataType) {
     return <div>

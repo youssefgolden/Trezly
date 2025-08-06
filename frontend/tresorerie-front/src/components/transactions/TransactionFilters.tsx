@@ -1,13 +1,13 @@
 import { CategoriesDataType } from '../../store/slice/categoriesSlice'
 
-type TransactionsFiltersType = {
+type TransactionsFiltersDataType = {
     type: string;
     categoryName: string;
     setType: (value: string) => void;
     setCategoryName: (value: string) => void;
     categories: CategoriesDataType[];
 }
-export default function TransactionFilters({ type, setType, categoryName, setCategoryName, categories }: TransactionsFiltersType) {
+export default function TransactionFilters({ type, setType, categoryName, setCategoryName, categories }: TransactionsFiltersDataType) {
     return (
         <div className='flex flex-row'>
             <select
