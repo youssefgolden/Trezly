@@ -22,8 +22,8 @@ jobs:
 
       - name: Install front dependencies
         run: npm ci
-        working-directory: ./frontend
+        working-directory: ./frontend/tresorerie-front
 
       - name: Run tests with Vitest
         run: npm run test -- --run
-        working-directory: ./frontend
+        working-directory: ./frontend/tresorerie-front
