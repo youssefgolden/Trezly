@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TresorerieApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+825b87b82b46b44b33b7f3accf534bcf96132df1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea558c5b88520b20efb3aebb5633be0249d75aea")]
 [assembly: System.Reflection.AssemblyProductAttribute("TresorerieApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TresorerieApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TresorerieApi.Models;
 using TresorerieApi.Data;
 using TresorerieApi.DTOs;
+using TresorerieApi.Services;
 
 namespace TresorerieApi.Controllers
 {
@@ -11,89 +10,109 @@ namespace TresorerieApi.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly CategoriesService _categoriesService;
 
-        public CategoriesController(AppDbContext context)
+        public CategoriesController(AppDbContext context, CategoriesService categoriesService)
         {
-            _context = context;
+            // _context = context;
+            _categoriesService = categoriesService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
-        {
-            var categories = _context.Categories
-                .Select(c => new CategorieDto
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                }).ToList();
+        {   
+            // old, removed after creating service
+            // var categories = _context.Categories
+            //     .Select(c => new CategorieDto
+            //     {
+            //         Id = c.Id,
+            //         Name = c.Name
+            //     }).ToList();
+            var categories = _categoriesService.GetAllCategories();
 
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
-        {
-            var categorie = _context.Categories
-                .Where(c => c.Id == id)
-                .Select(c => new CategorieDto
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                })
-                .FirstOrDefault();
+        {   
+            
+            // var categorie = _context.Categories
+            //     .Where(c => c.Id == id)
+            //     .Select(c => new CategorieDto
+            //     {
+            //         Id = c.Id,
+            //         Name = c.Name
+            //     })
+            //     .FirstOrDefault();
+            var category = _categoriesService.GetCategoryById(id);
 
-            if (categorie == null) return NotFound();
-            return Ok(categorie);
+            if (category == null) return NotFound();
+            return Ok(category);
         }
 
         [HttpPost]
         public IActionResult Create(CategorieDto dto)
         {
-            var categorie = new Categorie
-            {
-                Name = dto.Name
-            };
+            // var categorie = new Categorie
+            // {
+            //     Name = dto.Name
+            // };
 
-            _context.Categories.Add(categorie);
-            _context.SaveChanges();
+            // _context.Categories.Add(categorie);
+            // _context.SaveChanges();
 
-            dto.Id = categorie.Id; // mettre à jour l’id généré
+            // dto.Id = categorie.Id; // mettre à jour l’id généré
 
-            return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+            var created = _categoriesService.CreateCategory(dto);
+
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, CategorieDto dto)
         {
-            if (id != dto.Id) return BadRequest();
-
-            var existingCategory = _context.Categories.Find(id);
-            if (existingCategory == null) return NotFound();
-
-            existingCategory.Name = dto.Name;
-            _context.SaveChanges();
-
-            return NoContent();
+            try
+            {
+                _categoriesService.UpdateCategory(id, dto);
+                // return 200, all is ok , return void 
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                // return 400 pb on the request
+                return BadRequest(ex.Message);
+            }
+           catch (InvalidOperationException ex)
+           {
+            // return 404 the category dont existe
+            return NotFound(ex.Message);
+           }
         }
 
-       
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var categorie = _context.Categories.Find(id);
-            if (categorie == null) return NotFound();
-            
-            var hasTransactions = _context.Transactions.Any(transaction => transaction.CategoryId == id);
-            if (hasTransactions)
+            try
             {
-                return BadRequest("You can't delete this category because it has linked transactions.");
+                _categoriesService.DeleteCategory(id);
+                // return 200, all is ok , return void 
+                return NoContent();
             }
+            catch (InvalidOperationException ex)
+            {
+                // return 400 pb on the request
 
-            _context.Categories.Remove(categorie);
-            _context.SaveChanges();
-
-            return NoContent();
+                return BadRequest(ex.Message);
+            }
+             catch (ArgumentException ex)
+            {
+            // return 404 the category dont existe
+                return NotFound(ex.Message);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using TresorerieApi.Data;
+using TresorerieApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<CategoriesService>();
 
 // Ajoute les services de contrôleurs MVC
 builder.Services.AddControllers();
