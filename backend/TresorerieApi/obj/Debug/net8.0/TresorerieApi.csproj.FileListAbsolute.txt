@@ -133,3 +133,4 @@
 /Users/yy/Documents/project/tresorerie-saas/backend/TresorerieApi/obj/Debug/net8.0/TresorerieApi.pdb
 /Users/yy/Documents/project/tresorerie-saas/backend/TresorerieApi/obj/Debug/net8.0/TresorerieApi.genruntimeconfig.cache
 /Users/yy/Documents/project/tresorerie-saas/backend/TresorerieApi/obj/Debug/net8.0/ref/TresorerieApi.dll
+/Users/yy/Documents/project/tresorerie-saas/backend/TresorerieApi/obj/Debug/net8.0/TresorerieApi.sourcelink.json
