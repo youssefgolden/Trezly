@@ -6,7 +6,7 @@ Trezly is a simple treasury management app built with **React**, **Redux Toolkit
 It allows you to track income, expenses, and manage categories with a clean dashboard UI.
 
 
-## 🧰 Tech Stack
+## Tech Stack
 
 ### Frontend
 React 18 /
@@ -20,7 +20,7 @@ Entity Framework Core /
 JWT Auth /
 RESTful Endpoints
 
-## 🚀 Features
+## Features
 
  -- Add, edit and remove transactions 
  -- Categorize incomes and expenses
@@ -31,7 +31,7 @@ RESTful Endpoints
  -- Unit tests & CI for frontend
 
 
-## 🧪 Run Frontend Tests
+## Run Frontend Tests
 
 ```bash
 cd frontend
