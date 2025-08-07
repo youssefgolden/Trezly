@@ -1,0 +1,42 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+# 👉 Installer .NET SDK
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.0.x'
+
+# Backend 
+- script: dotnet restore backend/TresorerieApi/TresorerieApi.csproj
+  displayName: 'Restore .NET dependencies'
+
+- script: dotnet build backend/TresorerieApi/TresorerieApi.csproj --configuration $(buildConfiguration)
+  displayName: 'Build .NET backend'
+
+- script: dotnet test backend/TresorerieApi/TresorerieApi.csproj --no-build --verbosity normal
+  displayName: 'Run backend tests'
+
+# Frontend 
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    cd frontend
+    npm install
+    npm run build
+  displayName: 'Build frontend'
+
+- script: |
+    cd frontend
+    npx vitest run
+  displayName: 'Run frontend tests (Vitest)'
