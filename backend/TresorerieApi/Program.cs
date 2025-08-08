@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173")
+            policy.WithOrigins("http://localhost:5173", "https://trezly.vercel.app")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -54,5 +54,8 @@ app.UseAuthorization();
 
 // Active le routage vers les contrôleurs
 app.MapControllers();
+
+// to use my Render app
+app.Urls.Add("http://0.0.0.0:8080");
 
 app.Run();
