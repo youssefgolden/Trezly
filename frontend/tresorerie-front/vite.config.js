@@ -8,4 +8,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/setupTests.tsx'],
   },
+  build: {
+    outDir: 'dist'
+  }
 });

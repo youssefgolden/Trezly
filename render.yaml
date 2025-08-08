@@ -1,0 +1,8 @@
+# Configuration for deply the .NET API and React frontend using Render
+services:
+  - type: web
+    name: trezly-api
+    env: docker
+    plan: free
+    branch: main
+    rootDir: backend/TresorerieApi
