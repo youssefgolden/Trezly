@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// needs for using my Render app
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
+
 //cors
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
