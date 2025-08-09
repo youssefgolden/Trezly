@@ -16,7 +16,7 @@ export default function TransactionFilters({ type, setType, categoryName, setCat
                 value={type}
                 onChange={(e) => setType(String(e.target.value))}
             >
-                <option value="" disabled>-- Select a type --</option>
+                <option value="Expense" disabled>-- Select a type, default: Expense--</option>
                 <option value="Income">Income</option>
                 <option value="Expense">Expense</option>
             </select>
