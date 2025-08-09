@@ -4,55 +4,59 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// needs for using my Render app
+// Bind Render (8080) 
 builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
-//cors
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+// = CORS =
 
+var MyCors = "_myCors";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:5173","https://trezly-api.onrender.com/")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-        
+    options.AddPolicy(MyCors, policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173","https://trezly-api.onrender.com/")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+    
 });
 
-
+//  database env var for Render is ConnectionStrings__DefaultConnection) 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Services 
 builder.Services.AddScoped<CategoriesService>();
 
-// Ajoute les services de contrôleurs MVC
+//  MVC + Swagger 
 builder.Services.AddControllers();
-
-// Active Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Active Swagger uniquement en dev , modifiable par la suite via des variable d'env
-// if (app.Environment.IsDevelopment())
-//{
+// Swagger var env ENABLE_SWAGGER=true
+var enableSwagger = app.Configuration.GetValue<bool>("ENABLE_SWAGGER");
+if (app.Environment.IsDevelopment() || enableSwagger)
+{
     app.UseSwagger();
     app.UseSwaggerUI();
-// }
+}
 
-// Middleware
+// Health check for Render
+app.MapGet("/health", () => Results.Ok("OK"));
+
 app.UseHttpsRedirection();
-
-//Cors 
-app.UseCors(MyAllowSpecificOrigins);
-
+app.UseCors(MyCors);
 app.UseAuthorization();
-
-// Active le routage vers les contrôleurs
 app.MapControllers();
+
+// AUTO-MIGRATIONS AU DÉMARRAGE 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
