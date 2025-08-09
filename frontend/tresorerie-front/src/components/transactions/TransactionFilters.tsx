@@ -27,7 +27,7 @@ export default function TransactionFilters({ type, setType, categoryName, setCat
                 value={categoryName}
                 onChange={(e) => setCategoryName(String(e.target.value))}
             >
-                <option value="" disabled>-- Select a category --</option>
+                <option value="alimentation" disabled>-- Select a category - default alimentation --</option>
                 {categories.map(category => (
                     <option key={category.id} value={category.name}>{category.name}</option>
                 ))
