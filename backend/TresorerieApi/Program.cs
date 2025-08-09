@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(MyCors, policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173","https://trezly-api.onrender.com/")
+            .WithOrigins("http://localhost:5173","hhttps://trezly.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -47,8 +47,8 @@ if (app.Environment.IsDevelopment() || enableSwagger)
 // Health check for Render
 app.MapGet("/health", () => Results.Ok("OK"));
 
-app.UseHttpsRedirection();
 app.UseCors(MyCors);
+app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
