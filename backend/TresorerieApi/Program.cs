@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173")
+            policy.WithOrigins("http://localhost:5173","https://trezly-api.onrender.com/")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -37,12 +37,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Active Swagger uniquement en dev
-if (app.Environment.IsDevelopment())
-{
+// Active Swagger uniquement en dev , modifiable par la suite via des variable d'env
+// if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 
 // Middleware
 app.UseHttpsRedirection();
