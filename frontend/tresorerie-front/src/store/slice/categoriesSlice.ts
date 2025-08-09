@@ -17,11 +17,13 @@ const initialState: CategoriesState = {
   loading: false,
   error: null,
 };
+// TODO : move and rework with .env file
+const API_BASE = "https://trezly-api.onrender.com";
 
 export const fetchCategories = createAsyncThunk(
   'categories/fetchCategories',
   async () => {
-    const response = await fetch('http://localhost:5137/api/Categories')
+    const response = await fetch(`${API_BASE}/api/Categories`)
     const data = await response.json()
 
     if (!response.ok) {
@@ -35,7 +37,7 @@ export const fetchCategories = createAsyncThunk(
 export const addCategories = createAsyncThunk(
   'categories/addCategories',
   async (categoryData: CategoriesDataType) => {
-    const response = await fetch('http://localhost:5137/api/Categories', {
+    const response = await fetch(`${API_BASE}/api/Categories`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +57,7 @@ export const addCategories = createAsyncThunk(
   export const editCategory = createAsyncThunk(
     'categories/editCategory',
     async (categoryData: CategoriesDataType) => {
-      const response = await fetch(`http://localhost:5137/api/Categories/${categoryData.id}`, {
+      const response = await fetch(`${API_BASE}/api/Categories/${categoryData.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +78,7 @@ export const addCategories = createAsyncThunk(
     export const removeCategories = createAsyncThunk(
       'categories/removeCategories',
       async (id: number) => {
-        const response = await fetch(`http://localhost:5137/api/Categories/${id}`, {
+        const response = await fetch(`${API_BASE}/api/Categories/${id}`, {
           method: 'DELETE',
         })
     

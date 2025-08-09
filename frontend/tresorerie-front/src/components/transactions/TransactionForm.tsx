@@ -72,7 +72,7 @@ export default function TransactionForm() {
                         required
                         onChange={(e) => setType(String(e.target.value))}
                     >
-                        <option value="" disabled>-- Select a type --</option>
+                        <option value="Income" disabled>-- Select a type --</option>
                         <option value="Income">Income</option>
                         <option value="Expense">Expense</option>
                     </select>
@@ -102,7 +102,7 @@ export default function TransactionForm() {
                         onChange={(e) => setCategoryId(e.target.value)}
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 p-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                     >
-                        <option value="">-- Select a category --</option>
+                        <option value="alimentation">-- Select a category --</option>
                         {categories.map(categorie => (
                             <option key={categorie.id} value={categorie.id}>{categorie.name}</option>
                         ))}

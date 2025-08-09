@@ -22,12 +22,15 @@ const initialState: TransactionsState = {
   error: null,
 };
 
+// TODO : move and rework with .env file
+const API_BASE = "https://trezly-api.onrender.com";
+
 // Thunk asynchrone
 
 export const fetchTransactions = createAsyncThunk(
   'transactions/fetchTransactions',
   async () => {
-    const response = await fetch('http://localhost:5137/api/Transactions?pageNumber=1&pageSize=60');
+    const response = await fetch(`${API_BASE}/api/Transactions?pageNumber=1&pageSize=60`);
     const data = await response.json();
 
     if (!response.ok) {
@@ -41,7 +44,7 @@ export const fetchTransactions = createAsyncThunk(
 export const addTransaction = createAsyncThunk(
   'transactions/addTransaction',
   async (transactionData: TransactionsDataType) => {
-    const response = await fetch('http://localhost:5137/api/Transactions', {
+    const response = await fetch(`${API_BASE}/api/Transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
