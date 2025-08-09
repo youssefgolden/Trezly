@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(MyCors, policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173","hhttps://trezly.vercel.app")
+            .WithOrigins("http://localhost:5173","https://trezly.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -60,3 +60,4 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
