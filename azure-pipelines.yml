@@ -6,15 +6,16 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  FRONTEND_DIR: 'frontend/tresorerie-front'
 
 steps:
-# Install .NET SDK
+# part .NET
 - task: UseDotNet@2
+  displayName: 'Install .NET SDK'
   inputs:
     packageType: 'sdk'
     version: '8.0.x'
 
-# Backend 
 - script: dotnet restore backend/TresorerieApi/TresorerieApi.csproj
   displayName: 'Restore .NET dependencies'
 
@@ -24,19 +25,40 @@ steps:
 - script: dotnet test backend/TresorerieApi/TresorerieApi.csproj --no-build --verbosity normal
   displayName: 'Run backend tests'
 
-# Frontend 
+#  React part 
 - task: NodeTool@0
+  displayName: 'Install Node.js'
   inputs:
     versionSpec: '18.x'
-  displayName: 'Install Node.js'
 
-- script: |
-    cd frontend
-    npm install
-    npm run build
-  displayName: 'Build frontend'
+- bash: |
+    echo "PWD:" $(pwd)
+    echo "DWD:" $(System.DefaultWorkingDirectory)
+    ls -la
+    echo "----"
+    find . -maxdepth 3 -name package.json -print
+  displayName: 'Debug repo layout'
 
-- script: |
-    cd frontend
-    npx vitest run
-  displayName: 'Run frontend tests (Vitest)'
+# Install deps
+- bash: npm ci
+  workingDirectory: '$(System.DefaultWorkingDirectory)/$(FRONTEND_DIR)'
+  displayName: 'Frontend | npm ci'
+
+# Tests (Vitest)
+- bash: npm run test -- --run
+  workingDirectory: '$(System.DefaultWorkingDirectory)/$(FRONTEND_DIR)'
+  displayName: 'Frontend | vitest'
+  continueOnError: false
+
+# Build
+- bash: npm run build
+  workingDirectory: '$(System.DefaultWorkingDirectory)/$(FRONTEND_DIR)'
+  displayName: 'Frontend | build'
+
+# push front artifact (after npm run build, if succed, we keep infos about the build and we name it frontend_dist)
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish frontend artifact'
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/$(FRONTEND_DIR)/dist'
+    ArtifactName: 'frontend_dist'
+  condition: succeeded()
