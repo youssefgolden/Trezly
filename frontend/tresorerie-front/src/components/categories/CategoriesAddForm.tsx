@@ -42,7 +42,7 @@ export default function CategoriesAddForm(){
                     type="submit"
                     className="bg-blue-600 text-white px-4 py-2 m-3 rounded hover:bg-blue-700"
                 >
-                    Add Transaction
+                    Add new category
                 </button>
            </form>
         </div>
