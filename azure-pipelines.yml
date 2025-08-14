@@ -2,41 +2,52 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: Release
+  FRONTEND_DIR: frontend/tresorerie-front
 
 steps:
-# Install .NET SDK
+# .NET
 - task: UseDotNet@2
   inputs:
-    packageType: 'sdk'
-    version: '8.0.x'
+    packageType: sdk
+    version: 8.0.x
 
-# Backend 
 - script: dotnet restore backend/TresorerieApi/TresorerieApi.csproj
-  displayName: 'Restore .NET dependencies'
+  displayName: Restore .NET
 
-- script: dotnet build backend/TresorerieApi/TresorerieApi.csproj --configuration $(buildConfiguration)
-  displayName: 'Build .NET backend'
+- script: dotnet build backend/TresorerieApi/TresorerieApi.csproj -c $(buildConfiguration) --no-restore
+  displayName: Build .NET
 
-- script: dotnet test backend/TresorerieApi/TresorerieApi.csproj --no-build --verbosity normal
-  displayName: 'Run backend tests'
+- script: dotnet test backend/TresorerieApi/TresorerieApi.csproj -c $(buildConfiguration) --no-build --verbosity normal
+  displayName: Test .NET
 
-# Frontend 
+# React
 - task: NodeTool@0
   inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js'
+    versionSpec: 18.x
 
-- script: |
-    cd frontend
-    npm install
-    npm run build
-  displayName: 'Build frontend'
+# Install deps
+- script: npm ci
+  workingDirectory: $(Build.SourcesDirectory)/$(FRONTEND_DIR)
+  displayName: npm ci
 
-- script: |
-    cd frontend
-    npx vitest run
-  displayName: 'Run frontend tests (Vitest)'
+# Tests (Vitest)
+- script: npm run test -- --run
+  workingDirectory: $(Build.SourcesDirectory)/$(FRONTEND_DIR)
+  displayName: Frontend tests
+
+# Build
+- script: npm run build
+  workingDirectory: $(Build.SourcesDirectory)/$(FRONTEND_DIR)
+  displayName: Frontend build
+
+# push front artifact (after npm run build, if succed, we keep infos about the build and we name it frontend_dist)
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: $(Build.SourcesDirectory)/$(FRONTEND_DIR)/dist
+    ArtifactName: frontend_dist
+  displayName: Publish frontend
+  condition: succeeded()
