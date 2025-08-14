@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(MyCors, policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173","https://trezly-api.onrender.com/")
+            .WithOrigins("http://localhost:5173","https://trezly.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
